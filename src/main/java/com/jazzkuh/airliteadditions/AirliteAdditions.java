@@ -2,6 +2,7 @@ package com.jazzkuh.airliteadditions;
 
 import com.jazzkuh.airliteadditions.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.triggers.RegularLightTrigger;
+import com.jazzkuh.airliteadditions.utils.music.MusicEngine;
 import de.jangassen.MenuToolkit;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,12 +23,16 @@ import java.util.Map;
 public class AirliteAdditions {
     private static @Getter @Setter(AccessLevel.PRIVATE) AirliteAdditions instance;
     private @Getter @Setter Map<Integer, AirliteFaderStatus> faderStatuses = new HashMap<>();
+    private @Getter MusicEngine musicEngine;
+    private @Getter @Setter Boolean shouldSkipOnStart = true;
 
     public AirliteAdditions() {
         for (int i = 1; i <= 8; i++) {
             AirliteFaderStatus airliteFaderStatus = new AirliteFaderStatus(i, (byte) 0, (byte) 1);
             faderStatuses.put(i, airliteFaderStatus);
         }
+
+        this.musicEngine = new MusicEngine(MusicEngine.MusicEngineProvider.SPOTIFY);
     }
 
     public static void main(String[] args) {

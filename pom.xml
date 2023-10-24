@@ -177,6 +177,21 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.LabyStudio</groupId>
+            <artifactId>java-spotify-api</artifactId>
+            <version>1.1.15</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tagtraum</groupId>
+            <artifactId>obstmusic</artifactId>
+            <version>0.9.8</version>
+            <scope>compile</scope>
+        </dependency>
+
+
         <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>

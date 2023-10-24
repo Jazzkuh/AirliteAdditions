@@ -42,7 +42,11 @@ public class UDPServer {
 
                     Trigger trigger = new Trigger(i, channelOn ? TriggerType.CHANNEL_ON : TriggerType.CHANNEL_OFF);
                     if (channelOn && airliteFaderStatus.isFaderActive()) {
-                        trigger.setTriggerType(TriggerType.FADER_AND_CHANNEL_ON);
+                        ChannelTriggerAction channelTriggerAction = ChannelTriggerRegistry.getAction(new Trigger(i, TriggerType.FADER_AND_CHANNEL_ON));
+                        if (channelTriggerAction != null) {
+                            channelTriggerAction.process(airliteFaderStatus);
+                            System.out.println("Triggered action for channel " + i + ": " + channelTriggerAction.getClass().getSimpleName());
+                        }
                     }
 
                     ChannelTriggerAction channelTriggerAction = ChannelTriggerRegistry.getAction(trigger);
@@ -64,7 +68,11 @@ public class UDPServer {
 
                     Trigger trigger = new Trigger(i, faderActive ? TriggerType.FADER_ON : TriggerType.FADER_OFF);
                     if (airliteFaderStatus.isChannelOn() && faderActive) {
-                        trigger.setTriggerType(TriggerType.FADER_AND_CHANNEL_ON);
+                        ChannelTriggerAction channelTriggerAction = ChannelTriggerRegistry.getAction(new Trigger(i, TriggerType.FADER_AND_CHANNEL_ON));
+                        if (channelTriggerAction != null) {
+                            channelTriggerAction.process(airliteFaderStatus);
+                            System.out.println("Triggered action for channel " + i + ": " + channelTriggerAction.getClass().getSimpleName());
+                        }
                     }
 
                     ChannelTriggerAction channelTriggerAction = ChannelTriggerRegistry.getAction(trigger);
