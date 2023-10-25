@@ -17,9 +17,13 @@ public class BulbRegistry {
 		bulbs.add(new Bulb("living_table", "192.168.178.38", "living", "table", "warm_white", "11711492"));
 		bulbs.add(new Bulb("living_hanging", "192.168.178.81", "living", "hanging", "warm_white", "11711492"));
 		bulbs.add(new Bulb("living_standing", "192.168.178.80", "living", "standing", "warm_white", "11711492"));
-		bulbs.add(new Bulb("kitchen_one", "192.168.178.109", "kitchen", "one", "warm_white", "11711485"));
+		bulbs.add(new Bulb("kitchen_one", "192.168.178.108", "kitchen", "one", "warm_white", "11711485"));
 		bulbs.add(new Bulb("kitchen_two", "192.168.178.101", "kitchen", "two", "warm_white", "11711485"));
 		bulbs.add(new Bulb("kitchen_three", "192.168.178.249", "kitchen", "three", "warm_white", "11711485"));
+	}
+
+	public static List<Bulb> getAllBulbs() {
+		return bulbs;
 	}
 
 	public static List<Bulb> getBulbsByGroup(String group) {

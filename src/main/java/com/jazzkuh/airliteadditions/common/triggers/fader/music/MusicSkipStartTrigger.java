@@ -18,7 +18,13 @@ public class MusicSkipStartTrigger extends TriggerAction {
 		}
 
 		AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_1A, ControlLedColor.GREEN);
-		musicEngine.next();
+		if (AirliteAdditions.getInstance().getShouldSkipOnStart()) {
+			musicEngine.next();
+		} else if (!musicEngine.isPlaying()) {
+			musicEngine.playPause();
+		}
+
+
 		if (!musicEngine.isPlaying() && musicEngine.getProvider() == MusicEngine.MusicEngineProvider.APPLE_MUSIC) {
 			musicEngine.playPause();
 		}

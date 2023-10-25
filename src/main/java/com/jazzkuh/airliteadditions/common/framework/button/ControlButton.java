@@ -13,15 +13,15 @@ public enum ControlButton {
     LED_5A((byte) 0x04, "A", 16, -25),
     LED_6A((byte) 0x05, "A", 32, -20),
     LED_7A((byte) 0x06, "A", 64, -15),
-    LED_8A((byte) 0x07, "A", -128, -10),
+    LED_8A((byte) 0x07, "A", -128, -10, false),
     LED_1B((byte) 0x08, "B", 1, -5),
     LED_2B((byte) 0x09, "B", 2, 0),
     LED_3B((byte) 0x0A, "B", 4, 5),
     LED_4B((byte) 0x0B, "B", 8, 10),
     LED_5B((byte) 0x0C, "B", 16, 15),
     LED_6B((byte) 0x0D, "B", 32, 20),
-    LED_7B((byte) 0x0E, "B", 64, 25),
-    LED_8B((byte) 0x0F, "B", -128, 30),
+    LED_7B((byte) 0x0E, "B", 64, 25, false),
+    LED_8B((byte) 0x0F, "B", -128, 30, false),
     ALL_LEDS((byte) 0xFF, "ALL", 0, 0);
 
     private final @Getter byte buttonId;

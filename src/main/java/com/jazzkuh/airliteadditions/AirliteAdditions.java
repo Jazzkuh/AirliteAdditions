@@ -23,6 +23,8 @@ public class AirliteAdditions {
     private @Getter @Setter Map<Integer, AirliteFaderStatus> faderStatuses = new HashMap<>();
     private @Getter MusicEngine musicEngine;
     private @Getter @Setter Boolean shouldSkipOnStart = true;
+    private @Getter @Setter Boolean partyLightEnabled = false;
+    private @Getter @Setter Boolean brightLightsEnabled = false;
 
     public AirliteAdditions() {
         for (int i = 1; i <= 8; i++) {
@@ -33,8 +35,7 @@ public class AirliteAdditions {
         this.musicEngine = new MusicEngine(MusicEngine.MusicEngineProvider.SPOTIFY);
     }
 
-    public static void main(String[] args) {
-        setInstance(new AirliteAdditions());
+    public void start() {
         new RegularLightTrigger().process();
 
         System.out.println("Starting AirliteAdditions");
@@ -60,5 +61,14 @@ public class AirliteAdditions {
         Runtime.getRuntime().addShutdownHook(shutdownHook);
 
         udpServer.start();
+    }
+
+    public void addSpotifyHooks() {
+        
+    }
+
+    public static void main(String[] args) {
+        setInstance(new AirliteAdditions());
+        instance.start();
     }
 }

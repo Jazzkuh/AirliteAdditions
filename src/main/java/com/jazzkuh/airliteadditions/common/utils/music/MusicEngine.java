@@ -4,6 +4,7 @@ import com.tagtraum.macos.music.Application;
 import com.tagtraum.macos.music.Epls;
 import de.labystudio.spotifyapi.SpotifyAPI;
 import de.labystudio.spotifyapi.SpotifyAPIFactory;
+import de.labystudio.spotifyapi.SpotifyListener;
 import de.labystudio.spotifyapi.model.MediaKey;
 import lombok.Getter;
 
@@ -14,9 +15,11 @@ public class MusicEngine {
 	private @Getter MusicEngineProvider provider;
 
 	public MusicEngine(MusicEngineProvider provider) {
-		this.spotifyAPI = SpotifyAPIFactory.createInitialized();
-		this.appleMusic = Application.getInstance();
+		this.spotifyAPI = SpotifyAPIFactory.create();
+		this.spotifyAPI.registerListener(new SpotifyEventListener());
+		this.spotifyAPI.initialize();
 
+		this.appleMusic = Application.getInstance();
 		this.provider = provider;
 	}
 

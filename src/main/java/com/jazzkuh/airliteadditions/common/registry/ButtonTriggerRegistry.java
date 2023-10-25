@@ -4,9 +4,7 @@ import com.jazzkuh.airliteadditions.common.framework.button.ButtonTrigger;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
 import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
 import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerType;
-import com.jazzkuh.airliteadditions.common.triggers.button.MusicPlayPauseTrigger;
-import com.jazzkuh.airliteadditions.common.triggers.button.MusicPreviousTrigger;
-import com.jazzkuh.airliteadditions.common.triggers.button.MusicSkipTrigger;
+import com.jazzkuh.airliteadditions.common.triggers.button.*;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -19,6 +17,10 @@ public class ButtonTriggerRegistry {
 		registerAction(new ButtonTrigger(ControlButton.LED_1A, TriggerType.BUTTON_PRESSED), MusicPlayPauseTrigger.class);
 		registerAction(new ButtonTrigger(ControlButton.LED_2A, TriggerType.BUTTON_PRESSED), MusicSkipTrigger.class);
 		registerAction(new ButtonTrigger(ControlButton.LED_3A, TriggerType.BUTTON_PRESSED), MusicPreviousTrigger.class);
+
+		registerAction(new ButtonTrigger(ControlButton.LED_8A, TriggerType.BUTTON_PRESSED), PartyLightTrigger.class);
+		registerAction(new ButtonTrigger(ControlButton.LED_7B, TriggerType.BUTTON_PRESSED), BrightLightsTrigger.class);
+		registerAction(new ButtonTrigger(ControlButton.LED_8B, TriggerType.BUTTON_PRESSED), FaderSkipToggleTrigger.class);
 	}
 
 	public static void registerAction(ButtonTrigger buttonTrigger, Class<? extends TriggerAction> triggerClass) {
