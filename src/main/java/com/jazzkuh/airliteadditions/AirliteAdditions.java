@@ -63,10 +63,6 @@ public class AirliteAdditions {
         udpServer.start();
     }
 
-    public void addSpotifyHooks() {
-        
-    }
-
     public static void main(String[] args) {
         setInstance(new AirliteAdditions());
         instance.start();

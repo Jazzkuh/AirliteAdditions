@@ -18,7 +18,7 @@ public class BrightLightsTrigger extends TriggerAction {
 	@SneakyThrows
 	public void process() {
 		if (AirliteAdditions.getInstance().getBrightLightsEnabled()) {
-			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_7B, ControlLedColor.GREEN);
+			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_8A, ControlLedColor.GREEN);
 			AirliteAdditions.getInstance().setBrightLightsEnabled(false);
 			for (Bulb bulb : BulbRegistry.getBulbsByGroups("warm_white")) {
 				PhilipsWizLightController.setColorTemperature(bulb, 100);
@@ -31,7 +31,7 @@ public class BrightLightsTrigger extends TriggerAction {
 				PhilipsWizLightController.setRGBColor(bulb, 111, 0, 255, 100);
 			}
 		} else {
-			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_7B, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
+			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_8A, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
 			AirliteAdditions.getInstance().setBrightLightsEnabled(true);
 			for (Bulb bulb : BulbRegistry.getAllBulbs()) {
 				PhilipsWizLightController.setColorTemperature(bulb, 6500, 100);
@@ -42,9 +42,9 @@ public class BrightLightsTrigger extends TriggerAction {
 	@Override
 	public void startActions() {
 		if (AirliteAdditions.getInstance().getBrightLightsEnabled()) {
-			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_7B, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
+			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_8A, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
 		} else {
-			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_7B, ControlLedColor.GREEN);
+			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_8A, ControlLedColor.GREEN);
 		}
 	}
 }
