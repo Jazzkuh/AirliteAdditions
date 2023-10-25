@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions.utils.lighting.bulb;
+package com.jazzkuh.airliteadditions.common.utils.lighting.bulb;
 
 import lombok.Getter;
 

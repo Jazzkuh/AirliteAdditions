@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions.framework.trigger;
+package com.jazzkuh.airliteadditions.common.framework.trigger;
 
 public enum TriggerType {
     FADER_ON,
@@ -6,5 +6,6 @@ public enum TriggerType {
     CHANNEL_ON,
     CHANNEL_OFF,
     FADER_AND_CHANNEL_ON,
-    FADER_OR_CHANNEL_OFF
+    BUTTON_PRESSED,
+    BUTTON_RELEASED
 }

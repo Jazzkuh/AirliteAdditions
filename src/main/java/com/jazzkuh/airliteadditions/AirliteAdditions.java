@@ -1,16 +1,13 @@
 package com.jazzkuh.airliteadditions;
 
-import com.jazzkuh.airliteadditions.framework.AirliteFaderStatus;
-import com.jazzkuh.airliteadditions.triggers.RegularLightTrigger;
-import com.jazzkuh.airliteadditions.utils.music.MusicEngine;
-import de.jangassen.MenuToolkit;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
+import com.jazzkuh.airliteadditions.common.framework.button.ButtonTrigger;
+import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
+import com.jazzkuh.airliteadditions.common.framework.button.ControlLedColor;
+import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
+import com.jazzkuh.airliteadditions.common.registry.ButtonTriggerRegistry;
+import com.jazzkuh.airliteadditions.common.triggers.fader.RegularLightTrigger;
+import com.jazzkuh.airliteadditions.common.utils.music.MusicEngine;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +19,7 @@ import java.util.Map;
 
 public class AirliteAdditions {
     private static @Getter @Setter(AccessLevel.PRIVATE) AirliteAdditions instance;
+    private static @Getter UDPServer udpServer;
     private @Getter @Setter Map<Integer, AirliteFaderStatus> faderStatuses = new HashMap<>();
     private @Getter MusicEngine musicEngine;
     private @Getter @Setter Boolean shouldSkipOnStart = true;
@@ -37,8 +35,7 @@ public class AirliteAdditions {
 
     public static void main(String[] args) {
         setInstance(new AirliteAdditions());
-
-        new RegularLightTrigger().process(null);
+        new RegularLightTrigger().process();
 
         System.out.println("Starting AirliteAdditions");
 
@@ -47,7 +44,21 @@ public class AirliteAdditions {
         java.awt.Image image = defaultToolkit.getImage(imageResource);
         Taskbar.getTaskbar().setIconImage(image);
 
-        UDPServer udpServer = new UDPServer();
+        udpServer = new UDPServer();
+
+        udpServer.writeStaticLed(ControlButton.ALL_LEDS, ControlLedColor.OFF);
+        for (ButtonTrigger buttonTrigger : ButtonTriggerRegistry.getTriggers().keySet()) {
+            ControlButton controlButton = buttonTrigger.getControlButton();
+            udpServer.writeStaticLed(controlButton, ControlLedColor.GREEN);
+
+            TriggerAction triggerAction = ButtonTriggerRegistry.getAction(buttonTrigger);
+            if (triggerAction == null) continue;
+            triggerAction.startActions();
+        }
+
+        Thread shutdownHook = new Thread(() -> udpServer.writeStaticLed(ControlButton.ALL_LEDS, ControlLedColor.OFF));
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
+
         udpServer.start();
     }
 }

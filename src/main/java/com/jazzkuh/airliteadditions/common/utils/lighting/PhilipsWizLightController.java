@@ -1,6 +1,6 @@
-package com.jazzkuh.airliteadditions.utils.lighting;
+package com.jazzkuh.airliteadditions.common.utils.lighting;
 
-import com.jazzkuh.airliteadditions.utils.lighting.bulb.Bulb;
+import com.jazzkuh.airliteadditions.common.utils.lighting.bulb.Bulb;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;

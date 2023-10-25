@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions.framework;
+package com.jazzkuh.airliteadditions.common.framework;
 
 import lombok.Getter;
 import lombok.Setter;
