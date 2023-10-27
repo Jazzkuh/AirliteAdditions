@@ -20,6 +20,8 @@ public class BulbRegistry {
 		bulbs.add(new Bulb("kitchen_one", "192.168.178.108", "kitchen", "one", "warm_white", "11711485"));
 		bulbs.add(new Bulb("kitchen_two", "192.168.178.101", "kitchen", "two", "warm_white", "11711485"));
 		bulbs.add(new Bulb("kitchen_three", "192.168.178.249", "kitchen", "three", "warm_white", "11711485"));
+		bulbs.add(new Bulb("cabinet_one", "192.168.178.109", "living", "cabinet", "warm_white", "11711485"));
+		bulbs.add(new Bulb("cabinet_two", "192.168.178.193", "living", "cabinet", "warm_white", "11711485"));
 	}
 
 	public static List<Bulb> getAllBulbs() {
