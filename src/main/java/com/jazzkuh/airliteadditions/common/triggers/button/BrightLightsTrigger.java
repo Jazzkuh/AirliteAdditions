@@ -21,14 +21,17 @@ public class BrightLightsTrigger extends TriggerAction {
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_8A, ControlLedColor.GREEN);
 			AirliteAdditions.getInstance().setBrightLightsEnabled(false);
 			for (Bulb bulb : BulbRegistry.getBulbsByGroups("warm_white")) {
-				PhilipsWizLightController.setColorTemperature(bulb, 100);
+				PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
 			}
+
 			for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "magenta")) {
-				PhilipsWizLightController.setRGBColor(bulb, 255, 0, 93, 100);
+				//PhilipsWizLightController.setRGBColor(bulb, 255, 0, 93, 100);
+				PhilipsWizLightController.setRGBColor(bulb, 255, 79, 0, 100);
 			}
 
 			for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "indigo")) {
-				PhilipsWizLightController.setRGBColor(bulb, 111, 0, 255, 100);
+				//PhilipsWizLightController.setRGBColor(bulb, 111, 0, 255, 100);
+				PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
 			}
 		} else {
 			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_8A, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
