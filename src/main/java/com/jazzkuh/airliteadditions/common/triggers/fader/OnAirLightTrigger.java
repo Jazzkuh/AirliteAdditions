@@ -10,8 +10,10 @@ public class OnAirLightTrigger extends TriggerAction {
 	@Override
 	@SneakyThrows
 	public void process() {
-		for (Bulb bulb : BulbRegistry.getBulbsByGroup("studio")) {
+		PhilipsWizLightController.setRGBColor(BulbRegistry.getBulbByName("studio_led_strip2"), 255, 0, 0, 100);
+		PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), true);
+		/*for (Bulb bulb : BulbRegistry.getBulbsByGroup("studio")) {
 			PhilipsWizLightController.setRGBColor(bulb, 255, 0, 0, 100);
-		}
+		}*/
 	}
 }

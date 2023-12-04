@@ -20,6 +20,8 @@ public class BrightLightsTrigger extends TriggerAction {
 		if (AirliteAdditions.getInstance().getBrightLightsEnabled()) {
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_8A, ControlLedColor.GREEN);
 			AirliteAdditions.getInstance().setBrightLightsEnabled(false);
+
+			PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
 			for (Bulb bulb : BulbRegistry.getBulbsByGroups("scarlet")) {
 				PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
 			}

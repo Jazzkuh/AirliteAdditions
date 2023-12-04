@@ -10,14 +10,15 @@ public class RegularLightTrigger extends TriggerAction {
 	@Override
 	@SneakyThrows
 	public void process() {
-		for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "magenta")) {
+		PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
+		/*for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "magenta")) {
 			//PhilipsWizLightController.setRGBColor(bulb, 255, 0, 93, 100);
 			PhilipsWizLightController.setRGBColor(bulb, 255, 79, 0, 100);
 		}
 
 		for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "indigo")) {
 			//PhilipsWizLightController.setRGBColor(bulb, 111, 0, 255, 100);
-			PhilipsWizLightController.setRGBColor(bulb, 	255, 36, 0, 100);
-		}
+			PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
+		}*/
 	}
 }

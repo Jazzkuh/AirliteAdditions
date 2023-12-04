@@ -49,6 +49,17 @@ public class PhilipsWizLightController {
     }
 
     @SneakyThrows
+    public static void setState(Bulb bulb, boolean on) {
+        @Cleanup
+        DatagramSocket socket = new DatagramSocket();
+        socket.setSoTimeout(TIMEOUT_MS);
+
+        String message = String.format("{\"method\":\"setPilot\",\"params\":{\"state\":" + (on ? "true" : "false") + "}}");
+
+        updateBulb(bulb.getIp(), socket, message);
+    }
+
+    @SneakyThrows
     public static void setScene(Bulb bulb, Scene scene, int brightness) {
         @Cleanup
         DatagramSocket socket = new DatagramSocket();
