@@ -15,9 +15,8 @@ public class ChannelTriggerRegistry {
 	private static Map<ChannelTrigger, Class<? extends TriggerAction>> triggers = new HashMap<>();
 
 	static {
-		registerAction(new ChannelTrigger(1, TriggerType.FADER_AND_CHANNEL_ON), OnAirLightTrigger.class);
-		registerAction(new ChannelTrigger(1, TriggerType.FADER_OFF), RegularLightTrigger.class);
-		registerAction(new ChannelTrigger(1, TriggerType.CHANNEL_OFF), RegularLightTrigger.class);
+		registerAction(new ChannelTrigger(-1, TriggerType.MICROPHONE_ON), OnAirLightTrigger.class);
+		registerAction(new ChannelTrigger(-1, TriggerType.MICROPHONE_OFF), RegularLightTrigger.class);
 		registerAction(new ChannelTrigger(8, TriggerType.FADER_AND_CHANNEL_ON), MusicSkipStartTrigger.class);
 		registerAction(new ChannelTrigger(8, TriggerType.CHANNEL_OFF), MusicPauseTrigger.class);
 		registerAction(new ChannelTrigger(8, TriggerType.FADER_OFF), MusicPauseTrigger.class);

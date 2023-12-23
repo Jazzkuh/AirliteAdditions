@@ -17,6 +17,22 @@ public class UDPReceiveHandler {
 
     public static void process(byte[] data) {
         try {
+            // byte 0 and 1 are the AirLite header
+
+            byte size = data[2];
+            byte cmd = data[3];
+
+            if (size == (byte) 0x03 && cmd == (byte) 0xE6) {
+                byte state = data[4];
+                ChannelTrigger channelTrigger = new ChannelTrigger(-1, state == (byte) 0x00 ? TriggerType.MICROPHONE_OFF : TriggerType.MICROPHONE_ON);
+                System.out.println("Microphone state: " + channelTrigger.getTriggerType().name());
+
+                TriggerAction triggerAction = ChannelTriggerRegistry.getAction(channelTrigger);
+                if (triggerAction != null) {
+                    triggerAction.process();
+                }
+            }
+
             if (data[3] == -32) {
                 for (int i = 1; i <= 8; i++) {
                     AirliteFaderStatus airliteFaderStatus = AirliteAdditions.getInstance().getFaderStatuses().get(i);

@@ -24,7 +24,7 @@ public class BulbRegistry {
 		bulbs.add(new Bulb("living_table_two", "192.168.178.135", "living", "hanging", "scarlet"));
 
 		bulbs.add(new Bulb("living_yellow_lamp", "192.168.178.55", "living", "yellow_lamp", "scarlet"));
-		bulbs.add(new Bulb("living_standing", "192.168.178.18", "living", "standing", "scarlet"));
+		bulbs.add(new Bulb("living_standing", "192.168.178.235", "living", "standing", "scarlet"));
 
 		bulbs.add(new Bulb("kitchen_one", "192.168.178.32", "kitchen", "one", "warm_white"));
 		bulbs.add(new Bulb("kitchen_two", "192.168.178.61", "kitchen", "two", "warm_white"));
