@@ -15,6 +15,7 @@ public class BulbRegistry {
 		bulbs.add(new Bulb("studio_left", "192.168.178.111", "studio", "left", "green", "indigo"));
 		bulbs.add(new Bulb("studio_led_strip", "192.168.178.205", "studio", "led_strip", "green", "magenta"));
 		bulbs.add(new Bulb("studio_led_strip2", "192.168.178.23"));
+		bulbs.add(new Bulb("studio_back", "192.168.178.247", "studio", "back", "green", "indigo"));
 
 		bulbs.add(new Bulb("living_hanging_one", "192.168.178.134", "living", "hanging", "scarlet"));
 		bulbs.add(new Bulb("living_hanging_two", "192.168.178.141", "living", "hanging", "scarlet"));

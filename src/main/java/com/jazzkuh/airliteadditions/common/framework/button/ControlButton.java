@@ -12,7 +12,7 @@ public enum ControlButton {
     LED_4A((byte) 0x03, "A", 8, -30),
     LED_5A((byte) 0x04, "A", 16, -25),
     LED_6A((byte) 0x05, "A", 32, -20),
-    LED_7A((byte) 0x06, "A", 64, -15),
+    LED_7A((byte) 0x06, "A", 64, -15, false),
     LED_8A((byte) 0x07, "A", -128, -10, false),
     LED_1B((byte) 0x08, "B", 1, -5),
     LED_2B((byte) 0x09, "B", 2, 0),

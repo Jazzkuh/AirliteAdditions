@@ -124,6 +124,29 @@ public class UDPServer {
             LOGGER.warning("Error while sending data: " + e.getMessage());
         }
     }
+
+    public void write(byte size, byte cmd, byte... data) {
+        try {
+            // Create a message with a fixed size of 12 bytes
+            byte[] message = new byte[12];
+            message[0] = (byte) 0xA0; // Airlite
+            message[1] = (byte) 0xA0; // Airlite
+            message[2] = size; // Size
+            message[3] = cmd; // CMD
+            System.arraycopy(data, 0, message, 4, data.length);
+
+            executorService.submit(() -> {
+                try {
+                    DatagramPacket sendPacket = new DatagramPacket(message, message.length, InetAddress.getByName(hostAddress), hostPort);
+                    socket.send(sendPacket);
+                } catch (Exception e) {
+                    LOGGER.warning("Error while sending data: " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            LOGGER.warning("Error while sending data: " + e.getMessage());
+        }
+    }
 }
 
 

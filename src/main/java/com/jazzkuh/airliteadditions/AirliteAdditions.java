@@ -25,6 +25,7 @@ public class AirliteAdditions {
     private @Getter @Setter Boolean shouldSkipOnStart = true;
     private @Getter @Setter Boolean partyLightEnabled = false;
     private @Getter @Setter Boolean brightLightsEnabled = false;
+    private @Getter @Setter Boolean backLightEnabled = false;
 
     public AirliteAdditions() {
         for (int i = 1; i <= 8; i++) {
