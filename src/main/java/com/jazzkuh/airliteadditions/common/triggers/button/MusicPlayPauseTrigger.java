@@ -14,10 +14,10 @@ public class MusicPlayPauseTrigger extends TriggerAction {
 	@SneakyThrows
 	public void process() {
 		if (musicEngine.isPlaying()) {
-			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_1A, ControlLedColor.RED);
+			//AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_1A, ControlLedColor.RED);
 			musicEngine.playPause();
 		} else {
-			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_1A, ControlLedColor.GREEN);
+			//AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_1A, ControlLedColor.GREEN);
 			musicEngine.playPause();
 		}
 	}
