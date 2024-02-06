@@ -5,6 +5,8 @@ import com.jazzkuh.airliteadditions.common.framework.channel.ChannelTrigger;
 import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerType;
 import com.jazzkuh.airliteadditions.common.triggers.fader.OnAirLightTrigger;
 import com.jazzkuh.airliteadditions.common.triggers.fader.RegularLightTrigger;
+import com.jazzkuh.airliteadditions.common.triggers.fader.music.CueOffTrigger;
+import com.jazzkuh.airliteadditions.common.triggers.fader.music.CueOnTrigger;
 import com.jazzkuh.airliteadditions.common.triggers.fader.music.MusicPauseTrigger;
 import com.jazzkuh.airliteadditions.common.triggers.fader.music.MusicSkipStartTrigger;
 
@@ -20,6 +22,8 @@ public class ChannelTriggerRegistry {
 		registerAction(new ChannelTrigger(8, TriggerType.FADER_AND_CHANNEL_ON), MusicSkipStartTrigger.class);
 		registerAction(new ChannelTrigger(8, TriggerType.CHANNEL_OFF), MusicPauseTrigger.class);
 		registerAction(new ChannelTrigger(8, TriggerType.FADER_OFF), MusicPauseTrigger.class);
+		registerAction(new ChannelTrigger(8, TriggerType.FADER_OFF_CUE_ON), CueOnTrigger.class);
+		registerAction(new ChannelTrigger(8, TriggerType.FADER_OFF_CUE_OFF), CueOffTrigger.class);
 	}
 
 	public static void registerAction(ChannelTrigger channelTrigger, Class<? extends TriggerAction> triggerClass) {

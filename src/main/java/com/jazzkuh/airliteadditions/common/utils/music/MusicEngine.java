@@ -4,7 +4,6 @@ import com.tagtraum.macos.music.Application;
 import com.tagtraum.macos.music.Epls;
 import de.labystudio.spotifyapi.SpotifyAPI;
 import de.labystudio.spotifyapi.SpotifyAPIFactory;
-import de.labystudio.spotifyapi.SpotifyListener;
 import de.labystudio.spotifyapi.model.MediaKey;
 import lombok.Getter;
 

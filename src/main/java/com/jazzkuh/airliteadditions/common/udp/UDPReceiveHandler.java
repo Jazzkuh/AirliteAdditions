@@ -1,5 +1,6 @@
-package com.jazzkuh.airliteadditions;
+package com.jazzkuh.airliteadditions.common.udp;
 
+import com.jazzkuh.airliteadditions.AirliteAdditions;
 import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.common.framework.button.ButtonTrigger;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
@@ -10,10 +11,21 @@ import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerType;
 import com.jazzkuh.airliteadditions.common.registry.ButtonTriggerRegistry;
 import com.jazzkuh.airliteadditions.common.registry.ChannelTriggerRegistry;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class UDPReceiveHandler {
     private static final Logger LOGGER = Logger.getLogger(UDPReceiveHandler.class.getName());
+    private static final Map<Integer, Byte> bits = Map.of(
+            1, (byte) 0x01,
+            2, (byte) 0x02,
+            3, (byte) 0x04,
+            4, (byte) 0x08,
+            5, (byte) 0x10,
+            6, (byte) 0x20,
+            7, (byte) 0x40,
+            8, (byte) 0x80
+    );
 
     public static void process(byte[] data) {
         try {
@@ -30,6 +42,34 @@ public class UDPReceiveHandler {
                 TriggerAction triggerAction = ChannelTriggerRegistry.getAction(channelTrigger);
                 if (triggerAction != null) {
                     triggerAction.process();
+                }
+            }
+
+            if (size == (byte) 0x04 && cmd == (byte) 0xE1) {
+                byte data0 = data[4];
+
+                for (int i = 1; i <= 8; i++) {
+                    byte state = (byte) (data0 & bits.get(i));
+                    AirliteFaderStatus airliteFaderStatus = AirliteAdditions.getInstance().getFaderStatuses().get(i);
+
+                    if (!airliteFaderStatus.isFaderActive() && airliteFaderStatus.isChannelOn()) {
+                        TriggerType triggerType = state == (byte) 0x00 ? TriggerType.FADER_OFF_CUE_OFF : TriggerType.FADER_OFF_CUE_ON;
+                        ChannelTrigger channelTrigger = new ChannelTrigger(i, triggerType);
+                        TriggerAction triggerAction = ChannelTriggerRegistry.getAction(channelTrigger);
+                        if (triggerAction != null) {
+                            triggerAction.process();
+                        }
+                        continue;
+                    }
+
+                    TriggerType triggerType = state == (byte) 0x00 ? TriggerType.CUE_OFF : TriggerType.CUE_ON;
+                    ChannelTrigger channelTrigger = new ChannelTrigger(i, state == (byte) 0x00 ? TriggerType.CUE_OFF : TriggerType.CUE_ON);
+                    System.out.println("Cue state: " + state);
+
+                    TriggerAction triggerAction = ChannelTriggerRegistry.getAction(channelTrigger);
+                    if (triggerAction != null) {
+                        triggerAction.process();
+                    }
                 }
             }
 

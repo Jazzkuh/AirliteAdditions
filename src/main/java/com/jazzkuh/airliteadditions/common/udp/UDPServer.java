@@ -1,22 +1,14 @@
-package com.jazzkuh.airliteadditions;
+package com.jazzkuh.airliteadditions.common.udp;
 
-import com.jazzkuh.airliteadditions.common.framework.button.ButtonTrigger;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedBlinkSpeed;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedColor;
-import com.jazzkuh.airliteadditions.common.registry.ButtonTriggerRegistry;
-import com.jazzkuh.airliteadditions.common.registry.ChannelTriggerRegistry;
-import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
-import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
-import com.jazzkuh.airliteadditions.common.framework.channel.ChannelTrigger;
-import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerType;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;

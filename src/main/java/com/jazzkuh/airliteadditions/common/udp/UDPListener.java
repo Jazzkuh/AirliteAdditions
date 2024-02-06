@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions;
+package com.jazzkuh.airliteadditions.common.udp;
 
 import lombok.Getter;
 import lombok.SneakyThrows;

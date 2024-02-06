@@ -7,7 +7,9 @@ import com.jazzkuh.airliteadditions.common.framework.button.ControlLedColor;
 import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
 import com.jazzkuh.airliteadditions.common.registry.ButtonTriggerRegistry;
 import com.jazzkuh.airliteadditions.common.triggers.fader.RegularLightTrigger;
+import com.jazzkuh.airliteadditions.common.udp.UDPServer;
 import com.jazzkuh.airliteadditions.common.utils.music.MusicEngine;
+import com.jazzkuh.airliteadditions.common.web.WebServer;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +24,7 @@ public class AirliteAdditions {
     private static @Getter UDPServer udpServer;
     private @Getter @Setter Map<Integer, AirliteFaderStatus> faderStatuses = new HashMap<>();
     private @Getter MusicEngine musicEngine;
+    private @Getter WebServer webServer;
     private @Getter @Setter Boolean shouldSkipOnStart = true;
     private @Getter @Setter Boolean partyLightEnabled = false;
     private @Getter @Setter Boolean brightLightsEnabled = false;
@@ -34,6 +37,8 @@ public class AirliteAdditions {
         }
 
         this.musicEngine = new MusicEngine(MusicEngine.MusicEngineProvider.SPOTIFY);
+        this.webServer = new WebServer(8080);
+        this.webServer.init();
     }
 
     public void start() {
