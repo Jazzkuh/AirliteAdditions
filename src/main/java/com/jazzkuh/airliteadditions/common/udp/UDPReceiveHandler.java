@@ -51,6 +51,7 @@ public class UDPReceiveHandler {
                 for (int i = 1; i <= 8; i++) {
                     byte state = (byte) (data0 & bits.get(i));
                     AirliteFaderStatus airliteFaderStatus = AirliteAdditions.getInstance().getFaderStatuses().get(i);
+                    airliteFaderStatus.setCueActive(state != (byte) 0x00);
 
                     if (!airliteFaderStatus.isFaderActive() && airliteFaderStatus.isChannelOn()) {
                         TriggerType triggerType = state == (byte) 0x00 ? TriggerType.FADER_OFF_CUE_OFF : TriggerType.FADER_OFF_CUE_ON;
@@ -63,7 +64,7 @@ public class UDPReceiveHandler {
                     }
 
                     TriggerType triggerType = state == (byte) 0x00 ? TriggerType.CUE_OFF : TriggerType.CUE_ON;
-                    ChannelTrigger channelTrigger = new ChannelTrigger(i, state == (byte) 0x00 ? TriggerType.CUE_OFF : TriggerType.CUE_ON);
+                    ChannelTrigger channelTrigger = new ChannelTrigger(i, triggerType);
                     System.out.println("Cue state: " + state);
 
                     TriggerAction triggerAction = ChannelTriggerRegistry.getAction(channelTrigger);

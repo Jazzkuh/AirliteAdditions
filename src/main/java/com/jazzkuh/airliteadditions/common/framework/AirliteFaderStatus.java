@@ -8,6 +8,7 @@ public class AirliteFaderStatus {
     private final int channelId;
     private @Setter boolean faderActive;
     private @Setter boolean channelOn;
+    private @Setter boolean cueActive = false;
 
     public AirliteFaderStatus(int channelId, byte faderData, byte channelData) {
         this.channelId = channelId;

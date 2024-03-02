@@ -3,6 +3,7 @@ package com.jazzkuh.airliteadditions.common.udp;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedBlinkSpeed;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedColor;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
+import com.jazzkuh.airliteadditions.common.udp.metering.MeteringListener;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -19,6 +20,7 @@ public class UDPServer {
     private static final Logger LOGGER = Logger.getLogger(UDPServer.class.getName());
 
     private @Getter DatagramSocket socket;
+    private @Getter DatagramSocket meteringSocket;
     private final @Getter ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final @Getter String hostAddress = "127.0.0.1";
     private final @Getter int port = 19550;
@@ -29,6 +31,9 @@ public class UDPServer {
         try {
             socket = new DatagramSocket(port);
             LOGGER.info("UDP server is running on port " + port);
+
+            meteringSocket = new DatagramSocket(19548);
+            LOGGER.info("UDP metering server is running on port 19548");
         } catch (Exception e) {
             LOGGER.severe("Error while starting the UDP server: " + e.getMessage());
         }
@@ -36,6 +41,7 @@ public class UDPServer {
 
     public void start() {
         new UDPListener(socket).start();
+        new MeteringListener(meteringSocket).start();
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {

@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions.common.udp;
+package com.jazzkuh.airliteadditions.common.udp.metering;
 
 import com.jazzkuh.airliteadditions.common.web.WebServer;
 import lombok.Getter;
@@ -7,15 +7,13 @@ import lombok.SneakyThrows;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-public class UDPListener extends Thread {
+public class MeteringListener extends Thread {
     private @Getter DatagramSocket socket;
-    private final @Getter String hostAddress = "127.0.0.1";
-
     byte[] receiveData = new byte[12];
     DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
     @SneakyThrows
-    public UDPListener(DatagramSocket socket) {
+    public MeteringListener(DatagramSocket socket) {
         this.socket = socket;
     }
 
@@ -28,7 +26,7 @@ public class UDPListener extends Thread {
 
                 //Send packet message to UI
                 byte[] data = receivePacket.getData();
-                UDPReceiveHandler.process(data);
+                MeteringReceiveHandler.process(data);
             }
         } catch (Throwable e) {
             e.printStackTrace();

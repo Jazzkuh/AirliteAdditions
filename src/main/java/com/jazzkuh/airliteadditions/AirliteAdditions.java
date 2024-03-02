@@ -29,6 +29,8 @@ public class AirliteAdditions {
     private @Getter @Setter Boolean partyLightEnabled = false;
     private @Getter @Setter Boolean brightLightsEnabled = false;
     private @Getter @Setter Boolean backLightEnabled = false;
+    private @Getter @Setter long micOn = -1;
+    private @Getter @Setter Map<String, Double> meteringValues = new HashMap<>();
 
     public AirliteAdditions() {
         for (int i = 1; i <= 8; i++) {
@@ -37,7 +39,7 @@ public class AirliteAdditions {
         }
 
         this.musicEngine = new MusicEngine(MusicEngine.MusicEngineProvider.SPOTIFY);
-        this.webServer = new WebServer(8080);
+        this.webServer = new WebServer(8082);
         this.webServer.init();
     }
 
