@@ -17,10 +17,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Getter
 public class WebServer {
+    public static ExecutorService EXECUTORS = Executors.newFixedThreadPool(1);
     public static Set<Session> sessions = new HashSet<>();
     private static Cache<String, Long> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MILLISECONDS).build();
 
@@ -60,6 +63,49 @@ public class WebServer {
             response.type("application/json");
             return getJson().toJSONString();
         });
+
+        Spark.get("/write/:channel/:state", (request, response) -> {
+            int channel = Integer.parseInt(request.params(":channel"));
+            AirliteFaderStatus airliteFaderStatus = AirliteAdditions.getInstance().getFaderStatuses().get(channel);
+            if (airliteFaderStatus == null) return "Channel not found";
+
+            if (request.params(":state").equalsIgnoreCase("toggle")) {
+                AirliteAdditions.getUdpServer().writeRemoteOn(airliteFaderStatus, !airliteFaderStatus.isChannelOn());
+                return "OK";
+            }
+
+            boolean state = Boolean.parseBoolean(request.params(":state"));
+            AirliteAdditions.getUdpServer().writeRemoteOn(airliteFaderStatus, state);
+            return "OK";
+        });
+
+        Spark.get("/write/resetpfl", (request, response) -> {
+            AirliteAdditions.getUdpServer().write((byte) 0x02, (byte) 0x07);
+            return "OK";
+        });
+
+        Spark.get("/write/pflautoann", (request, response) -> {
+            AirliteAdditions.getUdpServer().write((byte) 0x03, (byte) 0x08, (byte) 0x02);
+            return "OK";
+        });
+
+        Spark.get("/write/pflautocrm", (request, response) -> {
+            AirliteAdditions.getUdpServer().write((byte) 0x03, (byte) 0x09, (byte) 0x02);
+            return "OK";
+        });
+
+        Spark.get("/write/pflaux", (request, response) -> {
+            AirliteAdditions.getUdpServer().write((byte) 0x04, (byte) 0x06, (byte) 0x08, (byte) 0x02);
+            return "OK";
+        });
+
+        Spark.get("/pfl/:channel", (request, response) -> {
+            int channel = Integer.parseInt(request.params(":channel"));
+            AirliteFaderStatus airliteFaderStatus = AirliteAdditions.getInstance().getFaderStatuses().get(channel);
+            if (airliteFaderStatus == null) return "Channel not found";
+            AirliteAdditions.getUdpServer().write((byte) 0x04, (byte) 0x06, airliteFaderStatus.getModule(), (byte) 0x02);
+            return "OK";
+        });
     }
 
     private static JSONObject getJson() {
@@ -93,12 +139,17 @@ public class WebServer {
 
         jsonObject.put("micOnTime", dateFormat.format(elapsed));
         jsonObject.put("onAir", AirliteAdditions.getInstance().getFaderStatuses().values().stream().anyMatch(faderStatus -> faderStatus.isChannelOn() && faderStatus.isFaderActive()));
+        jsonObject.put("cueEnabled", AirliteAdditions.getInstance().getFaderStatuses().values().stream().anyMatch(AirliteFaderStatus::isCueActive) || AirliteAdditions.getInstance().getCueAux());
+        jsonObject.put("autoCueCRM", AirliteAdditions.getInstance().getAutoCueCrm());
+        jsonObject.put("autoCueANN", AirliteAdditions.getInstance().getAutoCueAnnouncer());
+        jsonObject.put("cueAux", AirliteAdditions.getInstance().getCueAux());
+
         return jsonObject;
     }
 
     @SneakyThrows
     public static void broadcastMessage() {
-        sessions.stream().filter(Session::isOpen).forEach(session -> {
+        EXECUTORS.submit(() -> sessions.stream().filter(Session::isOpen).forEach(session -> {
             if (cache.getIfPresent(session.getRemoteAddress().getAddress().getHostName()) != null) return;
             cache.put(session.getRemoteAddress().getAddress().getHostName(), System.currentTimeMillis());
 
@@ -107,6 +158,6 @@ public class WebServer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        }));
     }
 }

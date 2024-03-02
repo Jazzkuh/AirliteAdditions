@@ -31,10 +31,24 @@ public class AirliteAdditions {
     private @Getter @Setter Boolean backLightEnabled = false;
     private @Getter @Setter long micOn = -1;
     private @Getter @Setter Map<String, Double> meteringValues = new HashMap<>();
+    private @Getter @Setter Boolean autoCueCrm = false;
+    private @Getter @Setter Boolean autoCueAnnouncer = false;
+    private @Getter @Setter Boolean cueAux = false;
 
     public AirliteAdditions() {
+        Map<Integer, Byte> mappedChannels = Map.of(
+                1, (byte) 0x00,
+                2, (byte) 0x01,
+                3, (byte) 0x02,
+                4, (byte) 0x03,
+                5, (byte) 0x04,
+                6, (byte) 0x05,
+                7, (byte) 0x06,
+                8, (byte) 0x07
+        );
+
         for (int i = 1; i <= 8; i++) {
-            AirliteFaderStatus airliteFaderStatus = new AirliteFaderStatus(i, (byte) 0, (byte) 1);
+            AirliteFaderStatus airliteFaderStatus = new AirliteFaderStatus(i, (byte) 0, (byte) 1, mappedChannels.get(i));
             faderStatuses.put(i, airliteFaderStatus);
         }
 

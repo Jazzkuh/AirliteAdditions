@@ -1,5 +1,6 @@
 package com.jazzkuh.airliteadditions.common.udp;
 
+import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedBlinkSpeed;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedColor;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
@@ -48,6 +49,8 @@ public class UDPServer {
                 sendKeepAlive();
             }
         }, 4000, 4000);
+        this.write((byte) 0x02, (byte) 0x63);
+        this.write((byte) 0x02, (byte) 0x61);
     }
 
     public void sendKeepAlive() {
@@ -123,6 +126,30 @@ public class UDPServer {
         }
     }
 
+    public void writeRemoteOn(AirliteFaderStatus faderStatus, boolean activate) {
+        try {
+            // Create a message with a fixed size of 12 bytes
+            byte[] message = new byte[12];
+            message[0] = (byte) 0xA0; // Airlite
+            message[1] = (byte) 0xA0; // Airlite
+            message[2] = (byte) 0x04; // Size
+            message[3] = (byte) 0x05; // CMD
+            message[4] = faderStatus.getModule(); // ID
+            message[5] = (byte) (activate ? 0x01 : 0x00); // ON/OFF
+
+            executorService.submit(() -> {
+                try {
+                    DatagramPacket sendPacket = new DatagramPacket(message, message.length, InetAddress.getByName(hostAddress), hostPort);
+                    socket.send(sendPacket);
+                } catch (Exception e) {
+                    LOGGER.warning("Error while sending data: " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            LOGGER.warning("Error while sending data: " + e.getMessage());
+        }
+    }
+
     public void write(byte size, byte cmd, byte... data) {
         try {
             // Create a message with a fixed size of 12 bytes
@@ -131,7 +158,10 @@ public class UDPServer {
             message[1] = (byte) 0xA0; // Airlite
             message[2] = size; // Size
             message[3] = cmd; // CMD
-            System.arraycopy(data, 0, message, 4, data.length);
+
+            if (data.length > 0) {
+                System.arraycopy(data, 0, message, 4, data.length);
+            }
 
             executorService.submit(() -> {
                 try {

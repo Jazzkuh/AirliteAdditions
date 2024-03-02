@@ -34,6 +34,14 @@ public class UDPReceiveHandler {
             byte size = data[2];
             byte cmd = data[3];
 
+            if (size == (byte) 0x04 && (cmd == (byte) 0xA3 || cmd == (byte) 0xE3)) {
+                byte crm = data[4];
+                byte announcer = data[5];
+
+                AirliteAdditions.getInstance().setAutoCueCrm(crm == (byte) 0x01);
+                AirliteAdditions.getInstance().setAutoCueAnnouncer(announcer == (byte) 0x01);
+            }
+
             if (size == (byte) 0x03 && cmd == (byte) 0xE6) {
                 byte state = data[4];
                 ChannelTrigger channelTrigger = new ChannelTrigger(-1, state == (byte) 0x00 ? TriggerType.MICROPHONE_OFF : TriggerType.MICROPHONE_ON);
@@ -45,7 +53,7 @@ public class UDPReceiveHandler {
                 }
             }
 
-            if (size == (byte) 0x04 && cmd == (byte) 0xE1) {
+            if (size == (byte) 0x04 && (cmd == (byte) 0xE1 || cmd == (byte) 0xA1)) {
                 byte data0 = data[4];
 
                 for (int i = 1; i <= 8; i++) {
@@ -72,6 +80,11 @@ public class UDPReceiveHandler {
                         triggerAction.process();
                     }
                 }
+
+                byte data1 = data[5];
+                byte state = (byte) (data1 & (byte) 0x01);
+                boolean active = state == (byte) 0x01;
+                AirliteAdditions.getInstance().setCueAux(active);
             }
 
             if (data[3] == -32) {

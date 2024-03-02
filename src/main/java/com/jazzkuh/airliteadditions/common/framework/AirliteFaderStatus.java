@@ -9,11 +9,13 @@ public class AirliteFaderStatus {
     private @Setter boolean faderActive;
     private @Setter boolean channelOn;
     private @Setter boolean cueActive = false;
+    private @Setter byte module;
 
-    public AirliteFaderStatus(int channelId, byte faderData, byte channelData) {
+    public AirliteFaderStatus(int channelId, byte faderData, byte channelData, byte module) {
         this.channelId = channelId;
         this.faderActive = faderData >= 1;
         this.channelOn = channelData >= 1;
+        this.module = module;
     }
 
     public String toString() {
