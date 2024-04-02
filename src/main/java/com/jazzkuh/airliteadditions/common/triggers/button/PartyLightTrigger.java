@@ -53,7 +53,7 @@ public class PartyLightTrigger extends TriggerAction {
 			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_7B, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
 
 			try {
-				sendRequest("http://localhost:8888/dance-to-spotify?mode=party&roomIds=12482140,11711485,11711492");
+				sendRequest("http://localhost:8888/dance-to-spotify?mode=party&roomIds=12482140,11711485,11711492,19767090");
 			} catch (Exception ignored) {}
 
 			AirliteAdditions.getInstance().setPartyLightEnabled(true);
