@@ -165,11 +165,12 @@
 
         <!-- hid4java for cross-platform HID USB -->
         <dependency>
-            <groupId>com.github.umjammer</groupId>
+            <groupId>org.hid4java</groupId>
             <artifactId>hid4java</artifactId>
-            <version>0.14.2v</version>
+            <version>0.7.0</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -180,7 +181,7 @@
         <dependency>
             <groupId>com.github.LabyStudio</groupId>
             <artifactId>java-spotify-api</artifactId>
-            <version>1.1.15</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
 
