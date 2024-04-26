@@ -14,5 +14,8 @@ public class OnAirLightTrigger extends TriggerAction {
 		AirliteAdditions.getInstance().setMicOn(System.currentTimeMillis());
 		PhilipsWizLightController.setRGBColor(BulbRegistry.getBulbByName("studio_led_strip2"), 255, 0, 0, 100);
 		PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), true);
+
+		PhilipsWizLightController.setRGBColor(BulbRegistry.getBulbByName("studio_led_strip"), 255, 0, 0, 100);
+		PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip"), true);
 	}
 }

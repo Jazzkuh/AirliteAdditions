@@ -11,11 +11,11 @@ public class BulbRegistry {
 	private static final List<Bulb> bulbs = new ArrayList<>();
 
 	static {
-		bulbs.add(new Bulb("studio_right", "192.168.1.87", "studio", "right", "purple", "indigo"));
-		bulbs.add(new Bulb("studio_left", "192.168.1.77", "studio", "left", "green", "indigo"));
-		bulbs.add(new Bulb("studio_led_strip", "192.168.1.92", "studio", "led_strip", "green", "magenta"));
+		bulbs.add(new Bulb("studio_right", "192.168.1.87", "studio", "right", "indigo"));
+		bulbs.add(new Bulb("studio_left", "192.168.1.77", "studio", "left", "indigo"));
+		bulbs.add(new Bulb("studio_led_strip", "192.168.1.92", "studio", "led_strip", "magenta"));
 		bulbs.add(new Bulb("studio_led_strip2", "192.168.1.83"));
-		bulbs.add(new Bulb("studio_back", "192.168.1.81", "studio", "back", "green", "indigo"));
+		bulbs.add(new Bulb("studio_back", "192.168.1.81", "studio", "back", "indigo"));
 
 		bulbs.add(new Bulb("living_hanging_one", "192.168.1.138", "living", "hanging", "scarlet"));
 		bulbs.add(new Bulb("living_hanging_two", "192.168.1.137", "living", "hanging", "scarlet"));

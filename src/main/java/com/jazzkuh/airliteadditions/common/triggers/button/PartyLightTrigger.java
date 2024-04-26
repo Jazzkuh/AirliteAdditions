@@ -29,6 +29,11 @@ public class PartyLightTrigger extends TriggerAction {
 			new Timer().schedule(new TimerTask() {
 				@Override
 				public void run() {
+					PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
+					for (Bulb bulb : BulbRegistry.getBulbsByGroups("cabinet")) {
+						PhilipsWizLightController.setState(bulb, true);
+					}
+
 					for (Bulb bulb : BulbRegistry.getBulbsByGroups("scarlet")) {
 						PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
 					}
@@ -48,12 +53,15 @@ public class PartyLightTrigger extends TriggerAction {
 					}
 					System.out.println("Party light disabled");
 				}
-			}, 1000);
+			}, 1500);
 		} else {
+			for (Bulb bulb : BulbRegistry.getBulbsByGroups("cabinet")) {
+				PhilipsWizLightController.setState(bulb, false);
+			}
 			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_7B, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
 
 			try {
-				sendRequest("http://localhost:8888/dance-to-spotify?mode=party&roomIds=12482140,11711485,11711492,19767090");
+				sendRequest("http://localhost:8888/dance-to-spotify?mode=party&roomIds=12482140,11711485,11711492");
 			} catch (Exception ignored) {}
 
 			AirliteAdditions.getInstance().setPartyLightEnabled(true);

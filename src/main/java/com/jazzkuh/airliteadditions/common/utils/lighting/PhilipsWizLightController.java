@@ -2,28 +2,29 @@ package com.jazzkuh.airliteadditions.common.utils.lighting;
 
 import com.jazzkuh.airliteadditions.common.utils.lighting.bulb.Bulb;
 import lombok.Cleanup;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.LinkedList;
+import java.util.Queue;
 
 @UtilityClass
 public class PhilipsWizLightController {
     private static final int BULB_PORT = 38899;
-    private static final int TIMEOUT_MS = 1000;
+
+    @Getter
+    private final Queue<DatagramPacket> packetQueue = new LinkedList<>();
 
     @SneakyThrows
     public static void setRGBColor(Bulb bulb, int red, int green, int blue, int brightness) {
-        @Cleanup
-        DatagramSocket socket = new DatagramSocket();
-        socket.setSoTimeout(TIMEOUT_MS);
-
         String message = String.format("{\"method\":\"setPilot\",\"params\":{\"r\":%d,\"g\":%d,\"b\":%d,\"dimming\":%d}}",
                 red, green, blue, brightness);
 
-        updateBulb(bulb.getIp(), socket, message);
+        updateBulb(bulb.getIp(), message);
     }
 
     public static void setColorTemperature(Bulb bulb, int brightness) {
@@ -32,10 +33,6 @@ public class PhilipsWizLightController {
 
     @SneakyThrows
     public static void setColorTemperature(Bulb bulb, int temperature, int brightness) {
-        @Cleanup
-        DatagramSocket socket = new DatagramSocket();
-        socket.setSoTimeout(TIMEOUT_MS);
-
         // Range of possible temperatures: 2700K to 6500K
         if (temperature < 2200 || temperature > 6500) {
             System.out.println("Invalid color temperature. The valid range is 2700K to 6500K.");
@@ -45,26 +42,17 @@ public class PhilipsWizLightController {
         String message = String.format("{\"method\":\"setPilot\",\"params\":{\"temp\":%d,\"dimming\":%d}}",
                 temperature, brightness);
 
-        updateBulb(bulb.getIp(), socket, message);
+        updateBulb(bulb.getIp(), message);
     }
 
     @SneakyThrows
     public static void setState(Bulb bulb, boolean on) {
-        @Cleanup
-        DatagramSocket socket = new DatagramSocket();
-        socket.setSoTimeout(TIMEOUT_MS);
-
         String message = String.format("{\"method\":\"setPilot\",\"params\":{\"state\":" + (on ? "true" : "false") + "}}");
-
-        updateBulb(bulb.getIp(), socket, message);
+        updateBulb(bulb.getIp(), message);
     }
 
     @SneakyThrows
     public static void setScene(Bulb bulb, Scene scene, int brightness) {
-        @Cleanup
-        DatagramSocket socket = new DatagramSocket();
-        socket.setSoTimeout(TIMEOUT_MS);
-
         int sceneId = scene.ordinal() + 1; // Scene IDs are 1-based
 
         // Range of valid scene IDs: 1 to 32
@@ -76,24 +64,15 @@ public class PhilipsWizLightController {
         String message = String.format("{\"method\":\"setPilot\",\"params\":{\"sceneId\":%d,\"dimming\":%d}}",
                 sceneId, brightness);
 
-        updateBulb(bulb.getIp(), socket, message);
+        updateBulb(bulb.getIp(), message);
     }
 
-    private static void updateBulb(String socketAddress, DatagramSocket socket, String message) {
-        try {
-            byte[] sendData = message.getBytes();
-            InetAddress ipAddress = InetAddress.getByName(socketAddress);
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BULB_PORT);
-            socket.send(sendPacket);
-
-            byte[] receiveData = new byte[1024];
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            socket.receive(receivePacket);
-
-            String response = new String(receivePacket.getData(), 0, receivePacket.getLength());
-            System.out.println("Response: " + response);
-        } catch (Exception ignored) {
-        }
+    @SneakyThrows
+    private static void updateBulb(String socketAddress, String message) {
+        byte[] sendData = message.getBytes();
+        InetAddress ipAddress = InetAddress.getByName(socketAddress);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, BULB_PORT);
+        packetQueue.add(sendPacket);
     }
 
     public enum Scene {

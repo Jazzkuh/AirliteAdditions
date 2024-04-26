@@ -8,16 +8,17 @@ import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
 import com.jazzkuh.airliteadditions.common.registry.ButtonTriggerRegistry;
 import com.jazzkuh.airliteadditions.common.triggers.fader.RegularLightTrigger;
 import com.jazzkuh.airliteadditions.common.udp.UDPServer;
+import com.jazzkuh.airliteadditions.common.utils.lighting.PacketRunnable;
 import com.jazzkuh.airliteadditions.common.utils.music.MusicEngine;
 import com.jazzkuh.airliteadditions.common.web.WebServer;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.awt.*;
+import java.net.DatagramSocket;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 public class AirliteAdditions {
     private static @Getter @Setter(AccessLevel.PRIVATE) AirliteAdditions instance;
@@ -81,6 +82,9 @@ public class AirliteAdditions {
 
         Thread shutdownHook = new Thread(() -> udpServer.writeStaticLed(ControlButton.ALL_LEDS, ControlLedColor.OFF));
         Runtime.getRuntime().addShutdownHook(shutdownHook);
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new PacketRunnable(), 50, 50);
 
         udpServer.start();
     }
