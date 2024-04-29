@@ -137,6 +137,8 @@ public class WebServer {
         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Etc/GMT+0"));
 
+        jsonObject.put("micOnSince", AirliteAdditions.getInstance().getMicOn());
+
         jsonObject.put("micOnTime", dateFormat.format(elapsed));
         jsonObject.put("onAir", AirliteAdditions.getInstance().getFaderStatuses().values().stream().anyMatch(faderStatus -> faderStatus.isChannelOn() && faderStatus.isFaderActive()));
         jsonObject.put("cueEnabled", AirliteAdditions.getInstance().getFaderStatuses().values().stream().anyMatch(AirliteFaderStatus::isCueActive) || AirliteAdditions.getInstance().getCueAux());
