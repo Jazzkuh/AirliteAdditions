@@ -135,9 +135,9 @@ public class WebServer {
         long elapsedMillis = System.currentTimeMillis() - AirliteAdditions.getInstance().getMicOn();
         Date elapsed = new Date(elapsedMillis);
         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("Etc/GMT+0"));
+        jsonObject.put("time", dateFormat.format(new Date()));
 
-        jsonObject.put("time", dateFormat.format(new Date(System.currentTimeMillis())));
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Etc/GMT+0"));
         jsonObject.put("micOnSince", AirliteAdditions.getInstance().getMicOn());
 
         jsonObject.put("micOnTime", dateFormat.format(elapsed));
