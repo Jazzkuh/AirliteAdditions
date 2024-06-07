@@ -24,7 +24,7 @@ public class UDPServer {
     private @Getter DatagramSocket meteringSocket;
     private final @Getter ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final @Getter String hostAddress = "127.0.0.1";
-    private final @Getter int port = 19550;
+    private final @Getter int port = 19549;
     private final @Getter int hostPort = 19551; // Port number on the Airlite device
 
     @SneakyThrows

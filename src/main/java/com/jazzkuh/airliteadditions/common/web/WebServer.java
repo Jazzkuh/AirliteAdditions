@@ -1,5 +1,7 @@
 package com.jazzkuh.airliteadditions.common.web;
 
+import com.github.pireba.applescript.AppleScript;
+import com.github.pireba.applescript.AppleScriptObject;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.jazzkuh.airliteadditions.AirliteAdditions;
@@ -106,8 +108,37 @@ public class WebServer {
             AirliteAdditions.getUdpServer().write((byte) 0x04, (byte) 0x06, airliteFaderStatus.getModule(), (byte) 0x02);
             return "OK";
         });
+
+        Spark.get("/spotify/volume/:volume", (request, response) -> {
+            System.out.println("Setting volume to " + request.params(":volume"));
+            int volume = Integer.parseInt(request.params(":volume"));
+            String[] commands = {
+                    "tell application \"Spotify\" to set sound volume to " + volume,
+            };
+
+            AppleScript appleScript = new AppleScript(commands);
+            appleScript.execute();
+            return appleScript.execute();
+        });
+
+        Spark.get("/spotify/play", (request, response) -> {
+            AirliteAdditions.getInstance().getMusicEngine().playPause();
+            return "OK";
+        });
+
+        Spark.get("/spotify/next", (request, response) -> {
+            AirliteAdditions.getInstance().getMusicEngine().next();
+            return "OK";
+        });
+
+        Spark.get("/spotify/previous", (request, response) -> {
+            AirliteAdditions.getInstance().getMusicEngine().previous();
+            return "OK";
+        });
     }
 
+    @SneakyThrows
+    @SuppressWarnings("all")
     private static JSONObject getJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("success", true);
@@ -146,6 +177,19 @@ public class WebServer {
         jsonObject.put("autoCueCRM", AirliteAdditions.getInstance().getAutoCueCrm());
         jsonObject.put("autoCueANN", AirliteAdditions.getInstance().getAutoCueAnnouncer());
         jsonObject.put("cueAux", AirliteAdditions.getInstance().getCueAux());
+
+        String[] commands = {
+                "tell application \"Spotify\" to get sound volume",
+        };
+
+        AppleScript appleScript = new AppleScript(commands);
+        AppleScriptObject result = appleScript.executeAsObject();
+
+        JSONObject spotify = new JSONObject();
+        spotify.put("volume", Integer.parseInt(result.toString()));
+        spotify.put("playing", AirliteAdditions.getInstance().getMusicEngine().isPlaying());
+
+        jsonObject.put("spotify", spotify);
 
         return jsonObject;
     }

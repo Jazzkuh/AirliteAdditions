@@ -12,11 +12,11 @@ public class RegularLightTrigger extends TriggerAction {
 	@SneakyThrows
 	public void process() {
 		AirliteAdditions.getInstance().setMicOn(-1);
+		PhilipsWizLightController.setRGBColor(BulbRegistry.getBulbByName("studio_led_strip2"), 255, 0, 0, 100);
 		PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
 
-		for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "magenta")) {
-			//PhilipsWizLightController.setRGBColor(bulb, 255, 0, 93, 100);
-			PhilipsWizLightController.setRGBColor(bulb, 255, 79, 0, 100);
+		for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio")) {
+			PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.Ocean, 100);
 		}
 	}
 }

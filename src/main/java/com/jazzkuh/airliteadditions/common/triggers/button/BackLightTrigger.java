@@ -22,15 +22,16 @@ public class BackLightTrigger extends TriggerAction {
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_7A, ControlLedColor.GREEN);
 			AirliteAdditions.getInstance().setBackLightEnabled(true);
 			PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_back"), true);
-			PhilipsWizLightController.setRGBColor(BulbRegistry.getBulbByName("studio_back"), 255, 36, 0, 100);
 		}
 	}
 
 	@Override
 	public void startActions() {
 		if (AirliteAdditions.getInstance().getBackLightEnabled()) {
+			PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_back"), true);
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_7A, ControlLedColor.GREEN);
 		} else {
+			PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_back"), false);
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_7A, ControlLedColor.RED);
 		}
 	}
