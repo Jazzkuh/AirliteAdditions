@@ -30,26 +30,16 @@ public class PartyLightTrigger extends TriggerAction {
 				@Override
 				public void run() {
 					PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
-					for (Bulb bulb : BulbRegistry.getBulbsByGroups("cabinet")) {
-						PhilipsWizLightController.setState(bulb, true);
-					}
-
 					for (Bulb bulb : BulbRegistry.getBulbsByGroups("scarlet")) {
 						PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
 					}
 
+					for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio")) {
+						PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.PastelColors, 100);
+					}
+
 					for (Bulb bulb : BulbRegistry.getBulbsByGroups("warm_white")) {
 						PhilipsWizLightController.setColorTemperature(bulb, 2200, 100);
-					}
-
-					for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "magenta")) {
-						//PhilipsWizLightController.setRGBColor(bulb, 255, 0, 93, 100);
-						PhilipsWizLightController.setRGBColor(bulb, 255, 79, 0, 100);
-					}
-
-					for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio", "indigo")) {
-						//PhilipsWizLightController.setRGBColor(bulb, 111, 0, 255, 100);
-						PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
 					}
 					System.out.println("Party light disabled");
 				}

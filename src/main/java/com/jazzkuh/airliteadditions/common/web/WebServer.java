@@ -28,6 +28,8 @@ public class WebServer {
     public static ExecutorService EXECUTORS = Executors.newFixedThreadPool(1);
     public static Set<Session> sessions = new HashSet<>();
     private static Cache<String, Long> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MILLISECONDS).build();
+    public static int spotifyVolume = 100;
+    public static Cache<String, Integer> volumeCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
 
     public WebServer(Integer port) {
         Spark.port(port);
@@ -178,15 +180,22 @@ public class WebServer {
         jsonObject.put("autoCueANN", AirliteAdditions.getInstance().getAutoCueAnnouncer());
         jsonObject.put("cueAux", AirliteAdditions.getInstance().getCueAux());
 
-        String[] commands = {
-                "tell application \"Spotify\" to get sound volume",
-        };
-
-        AppleScript appleScript = new AppleScript(commands);
-        AppleScriptObject result = appleScript.executeAsObject();
-
         JSONObject spotify = new JSONObject();
-        spotify.put("volume", Integer.parseInt(result.toString()));
+        if (volumeCache.asMap().isEmpty()) {
+            String[] commands = {
+                    "tell application \"Spotify\" to get sound volume",
+            };
+
+            AppleScript appleScript = new AppleScript(commands);
+            AppleScriptObject result = appleScript.executeAsObject();
+
+            spotifyVolume = Integer.parseInt(result.toString());
+            volumeCache.put("volume", spotifyVolume);
+            spotify.put("volume", spotifyVolume);
+        } else {
+            spotify.put("volume", spotifyVolume);
+        }
+
         spotify.put("playing", AirliteAdditions.getInstance().getMusicEngine().isPlaying());
 
         jsonObject.put("spotify", spotify);

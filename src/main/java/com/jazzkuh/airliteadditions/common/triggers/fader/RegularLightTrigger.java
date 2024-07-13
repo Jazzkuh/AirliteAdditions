@@ -16,7 +16,7 @@ public class RegularLightTrigger extends TriggerAction {
 		PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
 
 		for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio")) {
-			PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.Ocean, 100);
+			PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.PastelColors, 100);
 		}
 	}
 }
