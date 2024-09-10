@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions.common.utils.lighting;
+package com.jazzkuh.airliteadditions.utils.lighting;
 
 import lombok.Cleanup;
 import lombok.SneakyThrows;

@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions.common.utils.music;
+package com.jazzkuh.airliteadditions.utils.music;
 
 import com.jazzkuh.airliteadditions.AirliteAdditions;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;

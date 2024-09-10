@@ -5,10 +5,9 @@ import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedBlinkSpeed;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedColor;
 import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
-import com.jazzkuh.airliteadditions.common.triggers.fader.RegularLightTrigger;
-import com.jazzkuh.airliteadditions.common.utils.lighting.PhilipsWizLightController;
-import com.jazzkuh.airliteadditions.common.utils.lighting.bulb.Bulb;
-import com.jazzkuh.airliteadditions.common.utils.lighting.bulb.BulbRegistry;
+import com.jazzkuh.airliteadditions.utils.lighting.PhilipsWizLightController;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.Bulb;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.BulbRegistry;
 import lombok.SneakyThrows;
 
 import java.util.Timer;
@@ -31,11 +30,11 @@ public class PartyLightTrigger extends TriggerAction {
 				public void run() {
 					PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
 					for (Bulb bulb : BulbRegistry.getBulbsByGroups("scarlet")) {
-						PhilipsWizLightController.setRGBColor(bulb, 255, 36, 0, 100);
+						PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.Sunset, 100);
 					}
 
 					for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio")) {
-						PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.PastelColors, 100);
+						PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.Sunset, 100);
 					}
 
 					for (Bulb bulb : BulbRegistry.getBulbsByGroups("warm_white")) {

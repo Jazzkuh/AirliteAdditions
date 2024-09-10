@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.Nullable;
 
+@Getter
 @ToString
 public enum ControlButton {
     LED_1A((byte) 0x00, "A", 1, -45, false),
@@ -11,7 +12,7 @@ public enum ControlButton {
     LED_3A((byte) 0x02, "A", 4, -35),
     LED_4A((byte) 0x03, "A", 8, -30),
     LED_5A((byte) 0x04, "A", 16, -25),
-    LED_6A((byte) 0x05, "A", 32, -20),
+    LED_6A((byte) 0x05, "A", 32, -20, false),
     LED_7A((byte) 0x06, "A", 64, -15, false),
     LED_8A((byte) 0x07, "A", -128, -10, false),
     LED_1B((byte) 0x08, "B", 1, -5),
@@ -24,11 +25,11 @@ public enum ControlButton {
     LED_8B((byte) 0x0F, "B", -128, 30, false),
     ALL_LEDS((byte) 0xFF, "ALL", 0, 0);
 
-    private final @Getter byte buttonId;
-    private final @Getter String row;
-    private final @Getter int pressedValue;
-    private final @Getter int buttonValue;
-    private final @Getter boolean hasPressedColor;
+    private final byte buttonId;
+    private final String row;
+    private final int pressedValue;
+    private final int buttonValue;
+    private final boolean hasPressedColor;
 
     ControlButton(byte buttonId, String row, int pressedValue, int buttonValue) {
         this.buttonId = buttonId;

@@ -1,4 +1,4 @@
-package com.jazzkuh.airliteadditions.common.utils.music;
+package com.jazzkuh.airliteadditions.utils.music;
 
 import com.tagtraum.macos.music.Application;
 import com.tagtraum.macos.music.Epls;

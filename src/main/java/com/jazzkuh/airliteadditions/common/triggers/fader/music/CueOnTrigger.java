@@ -2,7 +2,7 @@ package com.jazzkuh.airliteadditions.common.triggers.fader.music;
 
 import com.jazzkuh.airliteadditions.AirliteAdditions;
 import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
-import com.jazzkuh.airliteadditions.common.utils.music.MusicEngine;
+import com.jazzkuh.airliteadditions.utils.music.MusicEngine;
 import lombok.SneakyThrows;
 
 public class CueOnTrigger extends TriggerAction {

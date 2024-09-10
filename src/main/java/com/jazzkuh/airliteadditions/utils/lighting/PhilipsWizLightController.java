@@ -1,13 +1,11 @@
-package com.jazzkuh.airliteadditions.common.utils.lighting;
+package com.jazzkuh.airliteadditions.utils.lighting;
 
-import com.jazzkuh.airliteadditions.common.utils.lighting.bulb.Bulb;
-import lombok.Cleanup;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.Bulb;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -55,12 +53,6 @@ public class PhilipsWizLightController {
     public static void setScene(Bulb bulb, Scene scene, int brightness) {
         int sceneId = scene.ordinal() + 1; // Scene IDs are 1-based
 
-        // Range of valid scene IDs: 1 to 32
-        if (sceneId > 32) {
-            System.out.println("Invalid scene ID. The valid range is 1 to 32.");
-            return;
-        }
-
         String message = String.format("{\"method\":\"setPilot\",\"params\":{\"sceneId\":%d,\"dimming\":%d}}",
                 sceneId, brightness);
 
@@ -107,6 +99,9 @@ public class PhilipsWizLightController {
         Candlelight,
         GoldenWhite,
         Pulse,
-        Steampunk
+        Steampunk,
+        Diwali,
+        Snow,
+        Warning
     }
 }

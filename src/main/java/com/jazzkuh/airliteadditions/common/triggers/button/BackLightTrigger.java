@@ -2,12 +2,10 @@ package com.jazzkuh.airliteadditions.common.triggers.button;
 
 import com.jazzkuh.airliteadditions.AirliteAdditions;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
-import com.jazzkuh.airliteadditions.common.framework.button.ControlLedBlinkSpeed;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlLedColor;
 import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
-import com.jazzkuh.airliteadditions.common.utils.lighting.PhilipsWizLightController;
-import com.jazzkuh.airliteadditions.common.utils.lighting.bulb.Bulb;
-import com.jazzkuh.airliteadditions.common.utils.lighting.bulb.BulbRegistry;
+import com.jazzkuh.airliteadditions.utils.lighting.PhilipsWizLightController;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.BulbRegistry;
 import lombok.SneakyThrows;
 
 public class BackLightTrigger extends TriggerAction {

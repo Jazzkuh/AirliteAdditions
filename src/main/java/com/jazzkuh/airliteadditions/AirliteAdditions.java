@@ -8,13 +8,12 @@ import com.jazzkuh.airliteadditions.common.framework.trigger.TriggerAction;
 import com.jazzkuh.airliteadditions.common.registry.ButtonTriggerRegistry;
 import com.jazzkuh.airliteadditions.common.triggers.fader.RegularLightTrigger;
 import com.jazzkuh.airliteadditions.common.udp.UDPServer;
-import com.jazzkuh.airliteadditions.common.utils.lighting.PacketRunnable;
-import com.jazzkuh.airliteadditions.common.utils.music.MusicEngine;
+import com.jazzkuh.airliteadditions.utils.lighting.PacketRunnable;
+import com.jazzkuh.airliteadditions.utils.music.MusicEngine;
 import com.jazzkuh.airliteadditions.common.web.WebServer;
 import lombok.*;
 
 import java.awt.*;
-import java.net.DatagramSocket;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +29,7 @@ public class AirliteAdditions {
     private @Getter @Setter Boolean partyLightEnabled = false;
     private @Getter @Setter Boolean brightLightsEnabled = false;
     private @Getter @Setter Boolean backLightEnabled = false;
+    private @Getter @Setter Boolean alertEnabled = false;
     private @Getter @Setter long micOn = -1;
     private @Getter @Setter Map<String, Double> meteringValues = new HashMap<>();
     private @Getter @Setter Boolean autoCueCrm = false;
