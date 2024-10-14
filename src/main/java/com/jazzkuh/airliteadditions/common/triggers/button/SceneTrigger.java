@@ -10,13 +10,13 @@ import com.jazzkuh.airliteadditions.utils.lighting.bulb.Bulb;
 import com.jazzkuh.airliteadditions.utils.lighting.bulb.BulbRegistry;
 import lombok.SneakyThrows;
 
-public class AlertTrigger extends TriggerAction {
+public class SceneTrigger extends TriggerAction {
 	@Override
 	@SneakyThrows
 	public void process() {
-		if (AirliteAdditions.getInstance().getAlertEnabled()) {
+		if (AirliteAdditions.getInstance().getSceneEnabled()) {
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_6A, ControlLedColor.GREEN);
-			AirliteAdditions.getInstance().setAlertEnabled(false);
+			AirliteAdditions.getInstance().setSceneEnabled(false);
 
 			PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_led_strip2"), false);
 			for (Bulb bulb : BulbRegistry.getBulbsByGroups("studio")) {
@@ -24,16 +24,16 @@ public class AlertTrigger extends TriggerAction {
 			}
 		} else {
 			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_6A, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
-			AirliteAdditions.getInstance().setAlertEnabled(true);
+			AirliteAdditions.getInstance().setSceneEnabled(true);
 			for (Bulb bulb : BulbRegistry.getBulbsByGroup("studio")) {
-				PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.Warning, 100);
+				PhilipsWizLightController.setScene(bulb, PhilipsWizLightController.Scene.Romance, 100);
 			}
 		}
 	}
 
 	@Override
 	public void startActions() {
-		if (AirliteAdditions.getInstance().getAlertEnabled()) {
+		if (AirliteAdditions.getInstance().getSceneEnabled()) {
 			AirliteAdditions.getUdpServer().writeBlinkingLed(ControlButton.LED_6A, ControlLedColor.RED, ControlLedColor.OFF, ControlLedBlinkSpeed.SLOW);
 		} else {
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_6A, ControlLedColor.GREEN);

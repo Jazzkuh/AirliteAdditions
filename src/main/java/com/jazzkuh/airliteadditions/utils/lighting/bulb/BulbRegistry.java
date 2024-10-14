@@ -11,18 +11,19 @@ public class BulbRegistry {
 	private static final List<Bulb> bulbs = new ArrayList<>();
 
 	static {
-		bulbs.add(new Bulb("studio_right", "192.168.1.87", "studio", "right", "indigo"));
-		bulbs.add(new Bulb("studio_left", "192.168.1.77", "studio", "left", "indigo"));
-		bulbs.add(new Bulb("studio_led_strip", "192.168.1.92", "studio", "led_strip", "magenta"));
+		bulbs.add(new Bulb("studio_right", "192.168.1.87", "studio"));
+		bulbs.add(new Bulb("studio_left", "192.168.1.205", "studio"));
+		bulbs.add(new Bulb("studio_led_strip", "192.168.1.92", "studio"));
 		bulbs.add(new Bulb("studio_led_strip2", "192.168.1.83"));
-		bulbs.add(new Bulb("studio_back", "192.168.1.81", "studio", "back", "indigo"));
+		bulbs.add(new Bulb("studio_back", "192.168.1.81", "studio", "back"));
+		bulbs.add(new Bulb("studio_standing", "192.168.1.197", "studio"));
 
 		bulbs.add(new Bulb("living_hanging_one", "192.168.1.138", "living", "hanging", "scarlet"));
 		bulbs.add(new Bulb("living_hanging_two", "192.168.1.137", "living", "hanging", "scarlet"));
 		bulbs.add(new Bulb("living_hanging_three", "192.168.1.139", "living", "hanging", "scarlet"));
 
-		bulbs.add(new Bulb("living_table_one", "192.168.1.140", "living", "hanging", "scarlet"));
-		bulbs.add(new Bulb("living_table_two", "192.168.1.141", "living", "hanging", "scarlet"));
+		bulbs.add(new Bulb("living_table_one", "192.168.1.140", "studio", "hanging", "scarlet"));
+		bulbs.add(new Bulb("living_table_two", "192.168.1.141", "studio", "hanging", "scarlet"));
 
 		bulbs.add(new Bulb("living_yellow_lamp", "192.168.1.91", "living", "yellow_lamp", "scarlet"));
 		bulbs.add(new Bulb("living_standing", "192.168.1.88", "living", "standing", "scarlet"));
@@ -31,8 +32,8 @@ public class BulbRegistry {
 		bulbs.add(new Bulb("kitchen_two", "192.168.1.90", "kitchen", "two", "warm_white"));
 		bulbs.add(new Bulb("kitchen_three", "192.168.1.80", "kitchen", "three", "warm_white"));
 
-		bulbs.add(new Bulb("cabinet_one", "192.168.1.85", "living", "cabinet", "warm_white"));
-		bulbs.add(new Bulb("cabinet_two", "192.168.1.82", "living", "cabinet", "warm_white"));
+		bulbs.add(new Bulb("cabinet_one", "192.168.1.77", "living", "cabinet", "warm_white"));
+		bulbs.add(new Bulb("cabinet_two", "192.168.1.203", "living", "cabinet", "warm_white"));
 	}
 
 	public static List<Bulb> getAllBulbs() {
