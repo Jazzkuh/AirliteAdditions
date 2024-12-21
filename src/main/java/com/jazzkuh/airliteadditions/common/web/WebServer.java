@@ -7,6 +7,8 @@ import com.google.common.cache.CacheBuilder;
 import com.jazzkuh.airliteadditions.AirliteAdditions;
 import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.common.udp.WebSocketHandler;
+import de.labystudio.spotifyapi.SpotifyAPI;
+import de.labystudio.spotifyapi.model.Track;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.eclipse.jetty.websocket.api.Session;
@@ -196,8 +198,20 @@ public class WebServer {
             spotify.put("volume", spotifyVolume);
         }
 
-        spotify.put("playing", AirliteAdditions.getInstance().getMusicEngine().isPlaying());
+        SpotifyAPI spotifyAPI = AirliteAdditions.getInstance().getMusicEngine().getSpotifyAPI();
+        Track currentTrack = spotifyAPI.getTrack();
+        if (currentTrack != null) {
+            spotify.put("track", currentTrack.getName());
+            spotify.put("artist", currentTrack.getArtist());
+            spotify.put("trackId", currentTrack.getId());
+            spotify.put("length", currentTrack.getLength());
+        }
 
+        if (spotifyAPI.hasPosition()) {
+            spotify.put("position", spotifyAPI.getPosition());
+        }
+
+        spotify.put("playing", AirliteAdditions.getInstance().getMusicEngine().isPlaying());
         jsonObject.put("spotify", spotify);
 
         return jsonObject;
@@ -206,9 +220,6 @@ public class WebServer {
     @SneakyThrows
     public static void broadcastMessage() {
         EXECUTORS.submit(() -> sessions.stream().filter(Session::isOpen).forEach(session -> {
-            if (cache.getIfPresent(session.getLocalAddress().getAddress().getHostName()) != null) return;
-            cache.put(session.getLocalAddress().getAddress().getHostName(), System.currentTimeMillis());
-
             try {
                 session.getRemote().sendString(getJson().toJSONString());
             } catch (Exception e) {
