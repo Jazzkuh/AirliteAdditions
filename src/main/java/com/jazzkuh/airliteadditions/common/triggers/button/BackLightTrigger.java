@@ -25,6 +25,9 @@ public class BackLightTrigger extends TriggerAction {
 
 	@Override
 	public void startActions() {
+		AirliteAdditions.getInstance().setBackLightEnabled(true);
+		PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_back"), true);
+
 		if (AirliteAdditions.getInstance().getBackLightEnabled()) {
 			PhilipsWizLightController.setState(BulbRegistry.getBulbByName("studio_back"), true);
 			AirliteAdditions.getUdpServer().writeStaticLed(ControlButton.LED_7A, ControlLedColor.GREEN);

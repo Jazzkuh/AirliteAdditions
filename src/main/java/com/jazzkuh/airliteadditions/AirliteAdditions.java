@@ -28,7 +28,7 @@ public class AirliteAdditions {
     private @Getter @Setter Boolean shouldSkipOnStart = true;
     private @Getter @Setter Boolean partyLightEnabled = false;
     private @Getter @Setter Boolean brightLightsEnabled = false;
-    private @Getter @Setter Boolean backLightEnabled = false;
+    private @Getter @Setter Boolean backLightEnabled = true;
     private @Getter @Setter Boolean sceneEnabled = false;
     private @Getter @Setter long micOn = -1;
     private @Getter @Setter Map<String, Double> meteringValues = new HashMap<>();

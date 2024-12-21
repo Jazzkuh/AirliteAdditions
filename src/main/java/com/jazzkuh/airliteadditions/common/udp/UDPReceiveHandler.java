@@ -87,7 +87,7 @@ public class UDPReceiveHandler {
                 AirliteAdditions.getInstance().setCueAux(active);
             }
 
-            if (data[3] == -32) {
+            if (size == (byte) 0x0A && (cmd == (byte) 0xE0 || cmd == (byte) 0xA0)) {
                 for (int i = 1; i <= 8; i++) {
                     AirliteFaderStatus airliteFaderStatus = AirliteAdditions.getInstance().getFaderStatuses().get(i);
                     int airliteIndex = airliteFaderStatus.getAirliteIndex();
@@ -113,7 +113,7 @@ public class UDPReceiveHandler {
                 }
             }
 
-            if (data[3] == -30) {
+            if (size == (byte) 0x0A && (cmd == (byte) 0xE2 || cmd == (byte) 0xA2)) {
                 for (int i = 1; i <= 8; i++) {
                     AirliteFaderStatus airliteFaderStatus = AirliteAdditions.getInstance().getFaderStatuses().get(i);
                     int airliteIndex = airliteFaderStatus.getAirliteIndex();
@@ -139,7 +139,7 @@ public class UDPReceiveHandler {
                 }
             }
 
-            if (data[3] == -60) {
+            if (size == (byte) 0x04 && cmd == (byte) 0xC4) {
                 int buttonId = data[10];
                 int pressedValueA = data[4];
                 int pressedValueB = data[5];

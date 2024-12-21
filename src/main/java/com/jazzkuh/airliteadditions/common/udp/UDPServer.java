@@ -23,6 +23,7 @@ public class UDPServer {
     private @Getter DatagramSocket socket;
     private @Getter DatagramSocket meteringSocket;
     private final @Getter ExecutorService executorService = Executors.newFixedThreadPool(10);
+
     private final @Getter String hostAddress = "127.0.0.1";
     private final @Getter int port = 19549;
     private final @Getter int hostPort = 19551; // Port number on the Airlite device
@@ -49,8 +50,14 @@ public class UDPServer {
                 sendKeepAlive();
             }
         }, 4000, 4000);
+
+        // Request current cue states
         this.write((byte) 0x02, (byte) 0x63);
         this.write((byte) 0x02, (byte) 0x61);
+
+        // Request the current state of the faders
+        this.write((byte) 0x04, (byte) 0x62);
+        this.write((byte) 0x04, (byte) 0x60);
     }
 
     public void sendKeepAlive() {

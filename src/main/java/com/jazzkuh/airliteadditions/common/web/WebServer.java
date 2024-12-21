@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class WebServer {
     public static ExecutorService EXECUTORS = Executors.newFixedThreadPool(1);
     public static Set<Session> sessions = new HashSet<>();
-    private static Cache<String, Long> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MILLISECONDS).build();
+    private static final Cache<String, Long> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MILLISECONDS).build();
     public static int spotifyVolume = 100;
     public static Cache<String, Integer> volumeCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
 
@@ -206,8 +206,8 @@ public class WebServer {
     @SneakyThrows
     public static void broadcastMessage() {
         EXECUTORS.submit(() -> sessions.stream().filter(Session::isOpen).forEach(session -> {
-            if (cache.getIfPresent(session.getRemoteAddress().getAddress().getHostName()) != null) return;
-            cache.put(session.getRemoteAddress().getAddress().getHostName(), System.currentTimeMillis());
+            if (cache.getIfPresent(session.getLocalAddress().getAddress().getHostName()) != null) return;
+            cache.put(session.getLocalAddress().getAddress().getHostName(), System.currentTimeMillis());
 
             try {
                 session.getRemote().sendString(getJson().toJSONString());

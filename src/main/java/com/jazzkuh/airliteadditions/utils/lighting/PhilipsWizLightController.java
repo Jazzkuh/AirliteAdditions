@@ -45,6 +45,11 @@ public class PhilipsWizLightController {
 
     @SneakyThrows
     public static void setState(Bulb bulb, boolean on) {
+        if (bulb == null) {
+            System.out.println("Bulb is null.");
+            return;
+        }
+
         String message = String.format("{\"method\":\"setPilot\",\"params\":{\"state\":" + (on ? "true" : "false") + "}}");
         updateBulb(bulb.getIp(), message);
     }
