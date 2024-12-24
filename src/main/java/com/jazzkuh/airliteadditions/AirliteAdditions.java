@@ -48,6 +48,9 @@ public class AirliteAdditions {
 
     private @Getter @Setter Map<String, String> lyricsCache = new HashMap<>();
 
+    private @Getter static String accessToken = null;
+    private @Getter static long tokenExpiration = 0;
+
     public AirliteAdditions() {
         Map<Integer, Byte> mappedChannels = Map.of(
                 1, (byte) 0x00,
@@ -118,6 +121,11 @@ public class AirliteAdditions {
                 lyricsCache.put(currentTrack.getName() + " " + currentTrack.getArtist(), lyrics);
             };
         }, 1000, 1000);
+
+        SpotifyTokenManager spotifyTokenManager = new SpotifyTokenManager();
+        spotifyTokenManager.run();
+
+        timer.scheduleAtFixedRate(spotifyTokenManager, 5000, 5000);
 
         udpServer.start();
     }

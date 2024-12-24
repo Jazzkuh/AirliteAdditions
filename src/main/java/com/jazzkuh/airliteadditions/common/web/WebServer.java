@@ -5,6 +5,7 @@ import com.github.pireba.applescript.AppleScriptObject;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.jazzkuh.airliteadditions.AirliteAdditions;
+import com.jazzkuh.airliteadditions.SpotifyTokenManager;
 import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.common.udp.WebSocketHandler;
 import com.jazzkuh.airliteadditions.utils.lighting.PhilipsWizLightController;
@@ -280,6 +281,9 @@ public class WebServer {
 
         if (spotifyAPI.hasPosition()) {
             spotify.put("position", spotifyAPI.getPosition());
+        }
+        if (SpotifyTokenManager.getCachedToken() != null) {
+            spotify.put("token", SpotifyTokenManager.getCachedToken());
         }
 
         spotify.put("playing", AirliteAdditions.getInstance().getMusicEngine().isPlaying());
