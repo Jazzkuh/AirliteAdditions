@@ -1,11 +1,13 @@
 package com.jazzkuh.airliteadditions.utils.lighting;
 
 import com.jazzkuh.airliteadditions.utils.lighting.bulb.Bulb;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -51,6 +53,12 @@ public class PhilipsWizLightController {
         }
 
         String message = String.format("{\"method\":\"setPilot\",\"params\":{\"state\":" + (on ? "true" : "false") + "}}");
+        updateBulb(bulb.getIp(), message);
+    }
+
+    @SneakyThrows
+    public static void setBrightness(Bulb bulb, int brightness) {
+        String message = String.format("{\"method\":\"setPilot\",\"params\":{\"dimming\":%d}}", brightness);
         updateBulb(bulb.getIp(), message);
     }
 

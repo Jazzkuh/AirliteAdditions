@@ -1,5 +1,7 @@
 package com.jazzkuh.airliteadditions;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.common.framework.button.ButtonTrigger;
 import com.jazzkuh.airliteadditions.common.framework.button.ControlButton;
@@ -9,15 +11,23 @@ import com.jazzkuh.airliteadditions.common.registry.ButtonTriggerRegistry;
 import com.jazzkuh.airliteadditions.common.triggers.fader.RegularLightTrigger;
 import com.jazzkuh.airliteadditions.common.udp.UDPServer;
 import com.jazzkuh.airliteadditions.utils.lighting.PacketRunnable;
+import com.jazzkuh.airliteadditions.utils.lighting.PhilipsWizLightController;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.Bulb;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.BulbRegistry;
 import com.jazzkuh.airliteadditions.utils.music.MusicEngine;
 import com.jazzkuh.airliteadditions.common.web.WebServer;
+import core.GLA;
+import de.labystudio.spotifyapi.SpotifyAPI;
+import de.labystudio.spotifyapi.model.Track;
+import genius.SongSearch;
 import lombok.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class AirliteAdditions {
     private static @Getter @Setter(AccessLevel.PRIVATE) AirliteAdditions instance;
@@ -35,6 +45,8 @@ public class AirliteAdditions {
     private @Getter @Setter Boolean autoCueCrm = false;
     private @Getter @Setter Boolean autoCueAnnouncer = false;
     private @Getter @Setter Boolean cueAux = false;
+
+    private @Getter @Setter Map<String, String> lyricsCache = new HashMap<>();
 
     public AirliteAdditions() {
         Map<Integer, Byte> mappedChannels = Map.of(
@@ -58,6 +70,7 @@ public class AirliteAdditions {
         this.webServer.init();
     }
 
+    @SneakyThrows
     public void start() {
         new RegularLightTrigger().process();
 
@@ -85,6 +98,26 @@ public class AirliteAdditions {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new PacketRunnable(), 50, 50);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                GLA gla = new GLA();
+
+                SpotifyAPI spotifyAPI = AirliteAdditions.getInstance().getMusicEngine().getSpotifyAPI();
+                Track currentTrack = spotifyAPI.getTrack();
+                if (currentTrack == null) return;
+                if (lyricsCache.containsKey(currentTrack.getName() + " " + currentTrack.getArtist())) return;
+
+                LinkedList<SongSearch.Hit> hits = gla.search(currentTrack.getName() + " " + currentTrack.getArtist()).getHits();
+                if (hits.isEmpty()) return;
+
+                String lyrics = hits.getFirst().fetchLyrics();
+                if (lyrics == null) return;
+
+                lyricsCache.put(currentTrack.getName() + " " + currentTrack.getArtist(), lyrics);
+            };
+        }, 1000, 1000);
 
         udpServer.start();
     }

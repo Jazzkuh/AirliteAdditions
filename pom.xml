@@ -11,8 +11,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
     </properties>
 
     <build>
@@ -193,6 +193,11 @@
             <artifactId>guava</artifactId>
             <version>30.1-jre</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.LowLevelSubmarine</groupId>
+            <artifactId>GeniusLyricsAPI</artifactId>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
 

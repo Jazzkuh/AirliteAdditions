@@ -7,20 +7,23 @@ import com.google.common.cache.CacheBuilder;
 import com.jazzkuh.airliteadditions.AirliteAdditions;
 import com.jazzkuh.airliteadditions.common.framework.AirliteFaderStatus;
 import com.jazzkuh.airliteadditions.common.udp.WebSocketHandler;
+import com.jazzkuh.airliteadditions.utils.lighting.PhilipsWizLightController;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.Bulb;
+import com.jazzkuh.airliteadditions.utils.lighting.bulb.BulbRegistry;
+import core.GLA;
 import de.labystudio.spotifyapi.SpotifyAPI;
 import de.labystudio.spotifyapi.model.Track;
+import genius.SongSearch;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.eclipse.jetty.websocket.api.Session;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import spark.Spark;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +71,48 @@ public class WebServer {
         Spark.get("/status", (request, response) -> {
             response.type("application/json");
             return getJson().toJSONString();
+        });
+
+        Spark.get("/lights/:light/state/:state", (request, response) -> {
+            String light = request.params(":light");
+            Bulb bulb = BulbRegistry.getBulbByName(light);
+            if (bulb == null) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("success", false);
+                jsonObject.put("message", "Light not found");
+                return jsonObject.toJSONString();
+            }
+
+            String state = request.params(":state");
+            if (state.equalsIgnoreCase("on")) {
+                PhilipsWizLightController.setState(bulb, true);
+            } else if (state.equalsIgnoreCase("off")) {
+                PhilipsWizLightController.setState(bulb, false);
+            }
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("success", true);
+            jsonObject.put("message", state);
+            return jsonObject.toJSONString();
+        });
+
+        Spark.get("/lights/:light/dimming/:brightness", (request, response) -> {
+            String light = request.params(":light");
+            Bulb bulb = BulbRegistry.getBulbByName(light);
+            if (bulb == null) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("success", false);
+                jsonObject.put("message", "Light not found");
+                return jsonObject.toJSONString();
+            }
+
+            int brightness = Integer.parseInt(request.params(":brightness"));
+            PhilipsWizLightController.setBrightness(bulb, brightness);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("success", true);
+            jsonObject.put("message", brightness);
+            return jsonObject.toJSONString();
         });
 
         Spark.get("/write/:channel/:state", (request, response) -> {
@@ -139,6 +184,27 @@ public class WebServer {
             AirliteAdditions.getInstance().getMusicEngine().previous();
             return "OK";
         });
+
+        Spark.post("/lyrics", (request, response) -> {
+            JSONObject body = (JSONObject) new JSONParser().parse(request.body());
+            String query = body.get("query").toString();
+
+            GLA gla = new GLA();
+            LinkedList<SongSearch.Hit> hits = gla.search(query).getHits();
+            if (hits.isEmpty()) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("success", false);
+                jsonObject.put("message", "No lyrics found.");
+                return jsonObject.toJSONString();
+            }
+
+            String lyrics = hits.getFirst().fetchLyrics();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("success", true);
+            jsonObject.put("message", lyrics);
+            return jsonObject.toJSONString();
+        });
     }
 
     @SneakyThrows
@@ -205,6 +271,11 @@ public class WebServer {
             spotify.put("artist", currentTrack.getArtist());
             spotify.put("trackId", currentTrack.getId());
             spotify.put("length", currentTrack.getLength());
+
+            String lyrics = AirliteAdditions.getInstance().getLyricsCache().getOrDefault(currentTrack.getName() + " " + currentTrack.getArtist(), null);
+            if (lyrics != null) {
+                spotify.put("lyrics", lyrics);
+            }
         }
 
         if (spotifyAPI.hasPosition()) {
@@ -214,6 +285,17 @@ public class WebServer {
         spotify.put("playing", AirliteAdditions.getInstance().getMusicEngine().isPlaying());
         jsonObject.put("spotify", spotify);
 
+        JSONArray lights = new JSONArray();
+
+        for (Bulb bulb : BulbRegistry.getBulbsByGroup("studio")) {
+            JSONObject bulbData = new JSONObject();
+            bulbData.put("name", bulb.getName());
+            bulbData.put("ip", bulb.getIp());
+            bulbData.put("groups", String.join(", ", bulb.getGroups()));
+            lights.add(bulbData);
+        }
+
+        jsonObject.put("lights", lights);
         return jsonObject;
     }
 
