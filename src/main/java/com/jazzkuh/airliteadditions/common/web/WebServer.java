@@ -14,6 +14,7 @@ import com.jazzkuh.airliteadditions.utils.lighting.bulb.BulbRegistry;
 import core.GLA;
 import de.labystudio.spotifyapi.SpotifyAPI;
 import de.labystudio.spotifyapi.model.Track;
+import de.labystudio.spotifyapi.open.model.track.OpenTrack;
 import genius.SongSearch;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -268,8 +269,9 @@ public class WebServer {
         SpotifyAPI spotifyAPI = AirliteAdditions.getInstance().getMusicEngine().getSpotifyAPI();
         Track currentTrack = spotifyAPI.getTrack();
         if (currentTrack != null) {
+            OpenTrack openTrack = spotifyAPI.getOpenAPI().requestOpenTrack(currentTrack);
             spotify.put("track", currentTrack.getName());
-            spotify.put("artist", currentTrack.getArtist());
+            spotify.put("artist", openTrack.getArtists());
             spotify.put("trackId", currentTrack.getId());
             spotify.put("length", currentTrack.getLength());
 
