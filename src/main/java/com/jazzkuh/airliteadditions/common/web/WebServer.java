@@ -26,9 +26,11 @@ import spark.Spark;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 public class WebServer {
@@ -37,6 +39,7 @@ public class WebServer {
     private static final Cache<String, Long> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MILLISECONDS).build();
     public static int spotifyVolume = 100;
     public static Cache<String, Integer> volumeCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
+    private static final Map<String, Long> requestCache = new HashMap<>();
 
     public WebServer(Integer port) {
         Spark.port(port);
@@ -268,10 +271,23 @@ public class WebServer {
 
         SpotifyAPI spotifyAPI = AirliteAdditions.getInstance().getMusicEngine().getSpotifyAPI();
         Track currentTrack = spotifyAPI.getTrack();
+
         if (currentTrack != null) {
-            OpenTrack openTrack = spotifyAPI.getOpenAPI().requestOpenTrack(currentTrack);
+           String artists = currentTrack.getArtist();
+
+            try {
+                if (!requestCache.containsKey(currentTrack.getId())) {
+                    OpenTrack openTrack = spotifyAPI.getOpenAPI().requestOpenTrack(currentTrack);
+                    if (openTrack != null) {
+                        artists = openTrack.getArtists();
+                    }
+                }
+            } catch (Exception ignored) {
+                requestCache.put(currentTrack.getId(), System.currentTimeMillis());
+            }
+
             spotify.put("track", currentTrack.getName());
-            spotify.put("artist", openTrack.getArtists());
+            spotify.put("artist", String.valueOf(artists));
             spotify.put("trackId", currentTrack.getId());
             spotify.put("length", currentTrack.getLength());
 
